@@ -13,4 +13,7 @@ message.txt:
 	echo lorem ipsum > message.txt
 
 clean:
-	rm -f encryptor decryptor
+	rm -f encryptor decryptor crypted_file.txt private_key.txt
+
+mr-proper:
+	rm -f encryptor decryptor crypted_file.txt private_key.txt message.txt decrypted_file.txt
