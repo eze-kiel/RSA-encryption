@@ -8,5 +8,5 @@ By executing rsa_chiffr.c, you will generate a crypted file (called crypted_file
 By executing rsa_dechiffr.c, you will decrypt crypted_file.txt. Your initial message should now be in decrypted_file.txt.
 
 ## Notes
-gmp.h is needed to compile those scripts.
-You have to enter a NUMERICAL password during encryption !
+* gmp.h is needed to compile those scripts.
+* You have to enter a NUMERICAL password during encryption !
