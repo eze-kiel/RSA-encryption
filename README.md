@@ -3,7 +3,7 @@
 This is a school project, developed with my Baptiste Porte.
 
 ## Compilation
-Be sure to have gmp.h on your device. If not, refer to [link](https://gmplib.org/#DOWNLOAD "The official GMP website").
+Be sure to have gmp.h on your device. If not, refer to [The official GMP website](https://gmplib.org/#DOWNLOAD "The official GMP website").
 Once you are ready to go, just enter `make all` to execute the makefile.
 
 ## How to use it ?
