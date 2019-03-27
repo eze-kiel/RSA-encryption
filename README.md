@@ -1,4 +1,7 @@
 # RSA-encryption
+## About this project
+This is a school project, developed with my mate Baptiste Porte.
+
 ## How to use it ?
 You need to create a file called "message.txt" with the text you want to encrypt.
 By executing rsa_chiffr.c, you will generate a crypted file (called crypted_file.txt) and private_key.txt which contain your private key hashed with the password you entered.
