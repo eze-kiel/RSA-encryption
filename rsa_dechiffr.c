@@ -33,21 +33,20 @@ int main(int argc, char const *argv[])
 
     ptr_private_key = fopen("private_key.txt","r");
     
-    if (ptr_private_key != NULL)
+    if (ptr_private_key == NULL)
     {
-        fgets(char_encoded, SIZE_BUFF, ptr_private_key);
-        mpz_set_str(tempo, char_encoded, 10);
-        printf("Rentrez votre mot de passe pour decrypter le message : \n");
-        scanf("%lu",&password);
-        mpz_cdiv_q_ui(d, tempo, password);
-
-        fgets(char_encoded, SIZE_BUFF, ptr_private_key);
-        mpz_set_str(n, char_encoded, 10);
-
-    }else{
         printf("Impossible d'ouvrir private_key.txt\n");
+        return 1;
     }
 
+    fgets(char_encoded, SIZE_BUFF, ptr_private_key);
+    mpz_set_str(tempo, char_encoded, 10);
+    printf("Rentrez votre mot de passe pour decrypter le message : \n");
+    scanf("%lu",&password);
+    mpz_cdiv_q_ui(d, tempo, password);
+
+    fgets(char_encoded, SIZE_BUFF, ptr_private_key);
+    mpz_set_str(n, char_encoded, 10);
 
     ptr_crypted_file = fopen("crypted_file.txt","r");
     ptr_decrypted_file = fopen("decrypted_file.txt","w");
@@ -55,23 +54,22 @@ int main(int argc, char const *argv[])
     ptr_decrypted_file = fopen("decrypted_file.txt","r+");
 
     //inserer le message dechiffré dans decrypted_file.txt
-    if (ptr_crypted_file != NULL)
-    {
-        printf("\n[+] Déchiffrement en cours ...\n\n");
-        while(fgets(char_encoded,SIZE_BUFF,ptr_crypted_file) != NULL)
-        {
-            mpz_set_str(crypted_message, char_encoded, 10);
-            dechiffrement(&crypted_message,d,n,&decrypted_message, ptr_decrypted_file);                   
-        } 
-
-        fclose(ptr_crypted_file);
-        fclose(ptr_decrypted_file);
-    }
-    else
+    if (ptr_crypted_file == NULL)
     {
         printf("Impossible d'ouvrir votre fichier\n");
+        return 1;
     }
 
+    printf("\n[+] Déchiffrement en cours ...\n\n");
+    
+    while(fgets(char_encoded,SIZE_BUFF,ptr_crypted_file) != NULL)
+    {
+        mpz_set_str(crypted_message, char_encoded, 10);
+        dechiffrement(&crypted_message,d,n,&decrypted_message, ptr_decrypted_file);                   
+    } 
+
+    fclose(ptr_crypted_file);
+    fclose(ptr_decrypted_file);
 
     mpz_clear(decrypted_message);
     mpz_clear(crypted_message);

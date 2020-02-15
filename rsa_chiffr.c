@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
 {
     clock_t start_script = clock();
 
-    int char_in_file;
+    int char_in_file = 42; // just be be sure that we do not init as EOF (-1)
     unsigned long password;
 
     //initialiser toutes les variables gmp
@@ -61,7 +61,6 @@ int main(int argc, char const *argv[])
     mpz_urandomb(rand_Num,r_state,BITS_FOR_ENCRYPTION);
     mpz_nextprime(q, rand_Num);
 
-    
     pub_key(&n, p, q, phin, &e);
     priv_key(&e, phin, &d);
 
@@ -70,55 +69,43 @@ int main(int argc, char const *argv[])
     FILE *ptr_crypted_file = NULL;
     FILE *ptr_key_file = NULL; 
 
-    
     ptr_plain_file = fopen("message.txt","r");
     ptr_crypted_file = fopen("crypted_file.txt","w");
     ptr_key_file = fopen("private_key.txt","w");
 
-    if (ptr_key_file != NULL)
+    if (ptr_key_file == NULL)
     {
-        printf("\n\nRentrez un mot de passe numérique : ");
-        scanf("%lu", &password);
+        printf("Impossible d'ouvrir le fichier private_key.txt\n");
+        return 1;
+    }
+    printf("\n\nRentrez un mot de passe numérique : ");
+    scanf("%lu", &password);
 
-        mpz_mul_ui(encoded_key, d, password);
-        mpz_out_str(ptr_key_file, 10, encoded_key);
-        fprintf(ptr_key_file, "\n");
-        mpz_out_str(ptr_key_file, 10, n);
-    }
-    else
-    {
-        printf("Impossible d'ouvrir le fichier priv_key\n");
-    }
+    mpz_mul_ui(encoded_key, d, password);
+    mpz_out_str(ptr_key_file, 10, encoded_key);
+    fprintf(ptr_key_file, "\n");
+    mpz_out_str(ptr_key_file, 10, n);
+
     fclose(ptr_key_file);
-    
 
     //inserer le message chiffré dans crypted_file.txt
-    if (ptr_plain_file != NULL)
+    if (ptr_plain_file == NULL)
     {
-        printf("\n\n[+] Chiffrement en cours...\n\n");
-        do
-        {
-            char_in_file = fgetc(ptr_plain_file);
-            if (char_in_file != EOF)
-            {
-                mpz_init_set_ui(plain_message, char_in_file);
-                chiffrement(&plain_message,e,n,&crypted_message, ptr_crypted_file);
-            }
-            else
-            {
-
-            }
-
-                
-        }while(char_in_file != EOF);
-        fclose(ptr_plain_file);
-        fclose(ptr_crypted_file);
-    }
-    else
-    {
-        printf("Impossible d'ouvrir plain_message\n");
+        printf("Impossible d'ouvrir plain_message 'message.txt'\n");
+        return 1;
     }
 
+    printf("\n\n[+] Chiffrement en cours...\n\n");
+
+    while (char_in_file != EOF)
+    {
+        char_in_file = fgetc(ptr_plain_file);
+        mpz_init_set_ui(plain_message, char_in_file);
+        chiffrement(&plain_message, e, n, &crypted_message, ptr_crypted_file);
+    }
+
+    fclose(ptr_plain_file);
+    fclose(ptr_crypted_file);
 
     mpz_clear(crypted_message);
     clock_t end_script = clock();
