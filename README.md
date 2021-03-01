@@ -1,4 +1,7 @@
 # RSA-encryption
+
+**IMPORTANT**: PLEASE DO NOT USE THIS TO ENCRYPT IMPORTANT STUFF AS IT HAS MANY SECURITY HOLES
+
 ## About this project
 This is a school project, developed with my Baptiste Porte.
 
